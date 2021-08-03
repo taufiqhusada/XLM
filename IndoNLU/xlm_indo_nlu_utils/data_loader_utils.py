@@ -1,6 +1,6 @@
 import os, sys
-sys.path.append('../../gkuwanto/indonlu/')
-os.chdir('../../gkuwanto/indonlu/')
+sys.path.append('/projectnb/statnlp/gkuwanto/indonlu/')
+os.chdir('/projectnb/statnlp/gkuwanto/indonlu/')
 
 import pandas as pd
 import torch
@@ -66,6 +66,6 @@ class DocumentSentimentDataLoader(DataLoader):
             
         lengths = torch.LongTensor(lengths)
         
-        langs = torch.LongTensor([self.params.lang2id['id']]).unsqueeze(0).expand(max_seq_len, batch_size) if self.params.n_langs > 1 else None
+        langs = None
          
         return word_ids, sentiment_batch, lengths, langs, seq_list
