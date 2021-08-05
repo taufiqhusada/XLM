@@ -7,4 +7,5 @@
 #$ -V
 #$ -m e
 
+python finetune_emot.py
 python finetune_smsa.py

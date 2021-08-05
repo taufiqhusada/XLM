@@ -12,7 +12,7 @@ from xlm.model.transformer import TransformerModel
 
 from collections import OrderedDict
 
-from xlm_indo_nlu_utils.data_loader_utils import DocumentSentimentDataset, DocumentSentimentDataLoader
+from xlm_indo_nlu_utils.data_loader_utils import EmotionDetectionDataset, EmotionDetectionDataLoader
 
 import random
 
@@ -31,7 +31,7 @@ from xlm_indo_nlu_utils.model_utils import forward_sequence_classification
 from torch import nn
 
 
-NUM_LABELS = 3
+NUM_LABELS = 5
 
 def set_seed(seed):
     random.seed(seed)
@@ -124,19 +124,19 @@ if __name__ == "__main__":
     
     set_seed(33333)
     
-    train_dataset_path = './dataset/smsa_doc-sentiment-prosa/train_preprocess.tsv'
-    valid_dataset_path = './dataset/smsa_doc-sentiment-prosa/valid_preprocess.tsv'
-    test_dataset_path = './dataset/smsa_doc-sentiment-prosa/test_preprocess_masked_label.tsv'
+    train_dataset_path = './dataset/emot_emotion-twitter/train_preprocess.csv'
+    valid_dataset_path = './dataset/emot_emotion-twitter/valid_preprocess.csv'
+    test_dataset_path = './dataset/emot_emotion-twitter/test_preprocess_masked_label.csv'
     
-    train_dataset = DocumentSentimentDataset(train_dataset_path, dico, params, lowercase=True)
-    valid_dataset = DocumentSentimentDataset(valid_dataset_path, dico, params, lowercase=True)
-    test_dataset = DocumentSentimentDataset(test_dataset_path,dico, params, lowercase=True)
+    train_dataset = EmotionDetectionDataset(train_dataset_path, dico, params, lowercase=True)
+    valid_dataset = EmotionDetectionDataset(valid_dataset_path, dico, params, lowercase=True)
+    test_dataset = EmotionDetectionDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = DocumentSentimentDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=True)  
-    valid_loader = DocumentSentimentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=16, num_workers=16, shuffle=False)  
-    test_loader = DocumentSentimentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=False)
+    train_loader = EmotionDetectionDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=True)  
+    valid_loader = EmotionDetectionDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=16, num_workers=16, shuffle=False)  
+    test_loader = EmotionDetectionDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=False)
     
-    w2i, i2w = DocumentSentimentDataset.LABEL2INDEX, DocumentSentimentDataset.INDEX2LABEL
+    w2i, i2w = EmotionDetectionDataset.LABEL2INDEX, EmotionDetectionDataset.INDEX2LABEL
     print(w2i)
     print(i2w)
     
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     optimizer_p = optim.Adam(proj.parameters(), lr=3e-4)
     proj = proj.cuda()
     
-    n_epochs = 15
+    n_epochs = 100
 
     for epoch in range(n_epochs):
         model.train()
@@ -232,10 +232,10 @@ if __name__ == "__main__":
 
     print(df['label'].value_counts())
 
-    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-smsa.csv', index=False)
+    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-emot.csv', index=False)
 
-    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/smsa_xlm_finetuned_model.pth')
-    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/smsa_proj.pth')
+    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/emot_xlm_finetuned_model.pth')
+    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/emot_proj.pth')
     
     
     
