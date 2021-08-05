@@ -30,6 +30,7 @@ class DocumentSentimentDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         text, sentiment = data['text'], data['sentiment']
+        text = '</s> ' + text + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in text])
       
         return subwords, np.array(sentiment), text
@@ -94,6 +95,7 @@ class EmotionDetectionDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         tweet, label = data['tweet'], data['label']
+        tweet = '</s> ' + tweet + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in tweet])
       
         return subwords, np.array(label), tweet
@@ -104,6 +106,71 @@ class EmotionDetectionDataset(Dataset):
 class EmotionDetectionDataLoader(DataLoader):
     def __init__(self,params,  max_seq_len=512, *args, **kwargs):
         super(EmotionDetectionDataLoader, self).__init__(*args, **kwargs)
+        self.collate_fn = self._collate_fn
+        self.max_seq_len = max_seq_len
+        self.params = params
+        
+    def _collate_fn(self, batch):
+        batch_size = len(batch)
+        max_seq_len = max(map(lambda x: len(x[0]), batch))
+        max_seq_len = min(self.max_seq_len, max_seq_len)
+        
+        sentiment_batch = np.zeros((batch_size, 1), dtype=np.int64)
+        
+        seq_list = []
+        lengths = []
+
+        word_ids = torch.LongTensor(max_seq_len, batch_size).fill_(self.params.pad_index)
+        for i, (subwords, sentiment, raw_seq) in enumerate(batch):
+            subwords = subwords[:max_seq_len]
+            word_ids[:len(subwords), i] = subwords
+            sentiment_batch[i,0] = sentiment
+            seq_list.append(raw_seq)
+            
+            lengths.append(len(subwords))
+            
+            
+        lengths = torch.LongTensor(lengths)
+        
+        langs = None
+         
+        return word_ids, sentiment_batch, lengths, langs, seq_list
+    
+ #####
+# Entailment UI
+#####
+class EntailmentDataset(Dataset):
+    # Static constant variable
+    LABEL2INDEX = {'NotEntail': 0, 'Entail_or_Paraphrase': 1}
+    INDEX2LABEL = {0: 'NotEntail', 1: 'Entail_or_Paraphrase'}
+    NUM_LABELS = 2
+    
+    def load_dataset(self, path):
+        df = pd.read_csv(path)
+        df['label'] = df['label'].apply(lambda label: self.LABEL2INDEX[label])
+        return df
+    
+    def __init__(self, dataset_path, dico, params, no_special_token=False, *args, **kwargs):
+        self.data = self.load_dataset(dataset_path)
+        self.dico = dico
+        self.params = params
+        
+    def __getitem__(self, index):
+        data = self.data.loc[index,:]
+        sent_A, sent_B, label = data['sent_A'], data['sent_B'], data['label']
+        
+        pair_sentence = '</s> ' + sent_A + ' <pad> ' + sent_B + ' </s>'
+        subwords = torch.LongTensor([self.dico.index(w) for w in pair_sentence])
+      
+        return subwords, np.array(label), pair_sentence
+    
+    def __len__(self):
+        return len(self.data)
+    
+        
+class EntailmentDataLoader(DataLoader):
+    def __init__(self,params,  max_seq_len=512, *args, **kwargs):
+        super(EntailmentDataLoader, self).__init__(*args, **kwargs)
         self.collate_fn = self._collate_fn
         self.max_seq_len = max_seq_len
         self.params = params

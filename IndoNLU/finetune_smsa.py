@@ -30,6 +30,7 @@ from utils.metrics import document_sentiment_metrics_fn
 from xlm_indo_nlu_utils.model_utils import forward_sequence_classification
 from torch import nn
 
+import argparse
 
 NUM_LABELS = 3
 
@@ -59,7 +60,16 @@ def to_bpe(sentences):
 
 
 if __name__ == "__main__":
-    model_path = "/projectnb/statnlp/gkuwanto/XLM/dumped/baseline_para_0/q3v4i6kl9t/best-valid_mlm_ppl.pth"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model_path", type=str, default="/projectnb/statnlp/gkuwanto/XLM/dumped/baseline_para_0/q3v4i6kl9t/best-valid_mlm_ppl.pth", help="Model path")
+    parser.add_argument("--batch_size", type=int, default=8, help="Number of sentences per batch")
+    parser.add_argument("--lr_optimizer_e", type=float, default=0.000005, help="LR Embedder (pretrained model) optimizer")
+    parser.add_argument("--lr_optimizer_p", type=float, default=0.000005, help="LR Projection (classifier) optimizer")
+    parser.add_argument("--n_epochs", type=int, default=250, help="Maximum number of epochs")
+    
+    custom_params = parser.parse_args()
+
+    model_path = custom_params.model_path
     reloaded = torch.load(model_path)
     params = AttrDict(reloaded['params'])
     print("Supported languages: %s" % ", ".join(params.lang2id.keys()))
@@ -140,12 +150,12 @@ if __name__ == "__main__":
     print(w2i)
     print(i2w)
     
-    optimizer_m = optim.Adam(model.parameters(), lr=3e-6)
+    optimizer_m = optim.Adam(model.parameters(), lr=custom_params.lr_optimizer_e)
     model = model.cuda()
-    optimizer_p = optim.Adam(proj.parameters(), lr=3e-4)
+    optimizer_p = optim.Adam(proj.parameters(),lr=custom_params.lr_optimizer_p)
     proj = proj.cuda()
     
-    n_epochs = 15
+    n_epochs = custom_params.n_epochs
 
     for epoch in range(n_epochs):
         model.train()

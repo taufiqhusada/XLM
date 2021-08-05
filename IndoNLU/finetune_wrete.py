@@ -12,7 +12,7 @@ from xlm.model.transformer import TransformerModel
 
 from collections import OrderedDict
 
-from xlm_indo_nlu_utils.data_loader_utils import EmotionDetectionDataset, EmotionDetectionDataLoader
+from xlm_indo_nlu_utils.data_loader_utils import EntailmentDataset, EntailmentDataLoader
 
 import random
 
@@ -33,7 +33,7 @@ from torch import nn
 import argparse
 
 
-NUM_LABELS = 5
+NUM_LABELS = 2
 
 def set_seed(seed):
     random.seed(seed)
@@ -135,25 +135,25 @@ if __name__ == "__main__":
     
     set_seed(33333)
     
-    train_dataset_path = './dataset/emot_emotion-twitter/train_preprocess.csv'
-    valid_dataset_path = './dataset/emot_emotion-twitter/valid_preprocess.csv'
-    test_dataset_path = './dataset/emot_emotion-twitter/test_preprocess_masked_label.csv'
+    train_dataset_path = './dataset/wrete_entailment-ui/train_preprocess.csv'
+    valid_dataset_path = './dataset/wrete_entailment-ui/valid_preprocess.csv'
+    test_dataset_path = './dataset/wrete_entailment-ui/test_preprocess_masked_label.csv'
     
-    train_dataset = EmotionDetectionDataset(train_dataset_path, dico, params, lowercase=True)
-    valid_dataset = EmotionDetectionDataset(valid_dataset_path, dico, params, lowercase=True)
-    test_dataset = EmotionDetectionDataset(test_dataset_path,dico, params, lowercase=True)
+    train_dataset = EntailmentDataset(train_dataset_path, dico, params, lowercase=True)
+    valid_dataset = EntailmentDataset(valid_dataset_path, dico, params, lowercase=True)
+    test_dataset = EntailmentDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = EmotionDetectionDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=True)  
-    valid_loader = EmotionDetectionDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=16, num_workers=16, shuffle=False)  
-    test_loader = EmotionDetectionDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=False)
+    train_loader = EntailmentDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=16, shuffle=True)  
+    valid_loader = EntailmentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=16, shuffle=False)  
+    test_loader = EntailmentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=16, shuffle=False)
     
-    w2i, i2w = EmotionDetectionDataset.LABEL2INDEX, EmotionDetectionDataset.INDEX2LABEL
+    w2i, i2w = EntailmentDataset.LABEL2INDEX, EntailmentDataset.INDEX2LABEL
     print(w2i)
     print(i2w)
     
     optimizer_m = optim.Adam(model.parameters(), lr=custom_params.lr_optimizer_e)
     model = model.cuda()
-    optimizer_p = optim.Adam(proj.parameters(),lr=custom_params.lr_optimizer_p)
+    optimizer_p = optim.Adam(proj.parameters(), lr=custom_params.lr_optimizer_p)
     proj = proj.cuda()
     
     n_epochs = custom_params.n_epochs
@@ -243,10 +243,10 @@ if __name__ == "__main__":
 
     print(df['label'].value_counts())
 
-    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-emot.csv', index=False)
+    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-wrete.csv', index=False)
 
-    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/emot_xlm_finetuned_model.pth')
-    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/emot_proj.pth')
+    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/wrete_xlm_finetuned_model.pth')
+    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/wrete_proj.pth')
     
     
     
