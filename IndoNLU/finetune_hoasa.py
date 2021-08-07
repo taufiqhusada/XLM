@@ -201,10 +201,10 @@ if __name__ == "__main__":
 
     print(df['label'])
 
-    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-casa.csv', index=False)
+    df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/output/pred-hoasa.csv', index=False)
 
-    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/casa_xlm_finetuned_model.pth')
-    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/casa_proj.pth')
+    torch.save(model.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/hoasa_xlm_finetuned_model.pth')
+    torch.save(proj.state_dict(), '/projectnb/statnlp/gik/XLM/IndoNLU/output/hoasa_proj.pth')
     
     
     
