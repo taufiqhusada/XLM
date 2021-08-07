@@ -24,7 +24,6 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 
-from utils.forward_fn import forward_sequence_classification
 from utils.metrics import document_sentiment_metrics_fn
 
 from xlm_indo_nlu_utils.model_utils import forward_sequence_classification

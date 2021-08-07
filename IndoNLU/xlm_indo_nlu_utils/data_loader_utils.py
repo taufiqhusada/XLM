@@ -200,3 +200,99 @@ class EntailmentDataLoader(DataLoader):
         langs = None
          
         return word_ids, sentiment_batch, lengths, langs, seq_list
+    
+
+## CASA
+class AspectBasedSentimentAnalysisProsaDataset(Dataset):
+    # Static constant variable
+    ASPECT_DOMAIN = ['fuel', 'machine', 'others', 'part', 'price', 'service']
+    LABEL2INDEX = {'negative': 0, 'neutral': 1, 'positive': 2}
+    INDEX2LABEL = {0: 'negative', 1: 'neutral', 2: 'positive'}
+    NUM_LABELS = [3, 3, 3, 3, 3, 3]
+    NUM_ASPECTS = 6
+    
+    def load_dataset(self, path):
+        df = pd.read_csv(path)
+        for aspect in self.ASPECT_DOMAIN:
+            df[aspect] = df[aspect].apply(lambda sen: self.LABEL2INDEX[sen])
+        return df
+    
+    def __init__(self, dataset_path, dico, params, no_special_token=False, *args, **kwargs):
+        self.data = self.load_dataset(dataset_path)
+        self.dico = dico
+        self.params = params
+        
+    def __getitem__(self, index):
+        data = self.data.loc[index,:]
+        sentence, labels = data['sentence'], [data[aspect] for aspect in self.ASPECT_DOMAIN]
+        sentence = '</s> ' + sentence + ' </s>'
+        subwords = torch.LongTensor([self.dico.index(w) for w in sentence])
+        return subwords, np.array(labels), sentence
+    
+    def __len__(self):
+        return len(self.data)
+    
+# Hoasa
+class AspectBasedSentimentAnalysisAiryDataset(Dataset):
+    # Static constant variable
+    ASPECT_DOMAIN = ['ac', 'air_panas', 'bau', 'general', 'kebersihan', 'linen', 'service', 'sunrise_meal', 'tv', 'wifi']
+    LABEL2INDEX = {'neg': 0, 'neut': 1, 'pos': 2, 'neg_pos': 3}
+    INDEX2LABEL = {0: 'neg', 1: 'neut', 2: 'pos', 3: 'neg_pos'}
+    NUM_LABELS = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+    NUM_ASPECTS = 10
+    
+    def load_dataset(self, path):
+        df = pd.read_csv(path)
+        for aspect in self.ASPECT_DOMAIN:
+            df[aspect] = df[aspect].apply(lambda sen: self.LABEL2INDEX[sen])
+        return df
+    
+    def __init__(self, dataset_path, dico, params, no_special_token=False, *args, **kwargs):
+        self.data = self.load_dataset(dataset_path)
+        self.dico = dico
+        self.params = params
+        
+    def __getitem__(self, index):
+        data = self.data.loc[index,:]
+        sentence, labels = data['review'], [data[aspect] for aspect in self.ASPECT_DOMAIN]
+        sentence = '</s> ' + sentence + ' </s>'
+        subwords = torch.LongTensor([self.dico.index(w) for w in sentence])
+        return subwords, np.array(labels), sentence
+    
+    def __len__(self):
+        return len(self.data)
+    
+        
+class AspectBasedSentimentAnalysisDataLoader(DataLoader):
+    def __init__(self, dataset, params, max_seq_len=512, *args, **kwargs):
+        super(AspectBasedSentimentAnalysisDataLoader, self).__init__(dataset=dataset, *args, **kwargs)
+        self.num_aspects = dataset.NUM_ASPECTS
+        self.collate_fn = self._collate_fn
+        self.max_seq_len = max_seq_len
+        self.params = params
+    
+    def _collate_fn(self, batch):
+        batch_size = len(batch)
+        max_seq_len = max(map(lambda x: len(x[0]), batch))
+        max_seq_len = min(self.max_seq_len, max_seq_len)
+        
+        label_batch = np.zeros((batch_size, self.num_aspects), dtype=np.int64)
+        
+        seq_list = []
+        lengths = []
+
+        word_ids = torch.LongTensor(max_seq_len, batch_size).fill_(self.params.pad_index)
+        for i, (subwords, label, raw_seq) in enumerate(batch):
+            subwords = subwords[:max_seq_len]
+            word_ids[:len(subwords), i] = subwords
+            label_batch[i,:] = label
+            seq_list.append(raw_seq)
+            
+            lengths.append(len(subwords))
+            
+            
+        lengths = torch.LongTensor(lengths)
+        
+        langs = None
+         
+        return word_ids, label_batch, lengths, langs, seq_list
