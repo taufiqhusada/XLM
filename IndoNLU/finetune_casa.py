@@ -59,10 +59,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_path", type=str, default="/projectnb/statnlp/gkuwanto/XLM/dumped/baseline_para_0/q3v4i6kl9t/best-valid_mlm_ppl.pth", help="Model path")
     parser.add_argument("--batch_size", type=int, default=8, help="Number of sentences per batch")
-    parser.add_argument("--lr_optimizer_e", type=float, default=0.000005, help="LR Embedder (pretrained model) optimizer")
-    parser.add_argument("--lr_optimizer_p", type=float, default=0.000005, help="LR Projection (classifier) optimizer")
-    parser.add_argument("--n_epochs", type=int, default=250, help="Maximum number of epochs")
+    parser.add_argument("--lr_optimizer_e", type=float, default=0.00001, help="LR Embedder (pretrained model) optimizer")
+    parser.add_argument("--lr_optimizer_p", type=float, default=0.00001, help="LR Projection (classifier) optimizer")
+    parser.add_argument("--n_epochs", type=int, default=25, help="Maximum number of epochs")
     
+    set_seed(42)
+
     custom_params = parser.parse_args()
 
     model_path = custom_params.model_path
@@ -87,8 +89,6 @@ if __name__ == "__main__":
     for k, v in reloaded['model'].items():
           reloaded_model[k.replace('module.', '')] = v
     model.load_state_dict(reloaded_model)
-   
-    set_seed(33333)
     
     
     train_dataset_path = './dataset/casa_absa-prosa/train_preprocess.csv'
@@ -99,9 +99,9 @@ if __name__ == "__main__":
     valid_dataset = AspectBasedSentimentAnalysisProsaDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = AspectBasedSentimentAnalysisProsaDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=True)  
-    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=False)  
-    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=16, num_workers=16, shuffle=False)
+    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=True)  
+    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
+    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
     
     w2i, i2w = AspectBasedSentimentAnalysisProsaDataset.LABEL2INDEX, AspectBasedSentimentAnalysisProsaDataset.INDEX2LABEL
     print(w2i)
