@@ -10,6 +10,27 @@ import numpy as np
 
 from torch.utils.data import Dataset, DataLoader
 
+# Below is one way to bpe-ize sentences
+codes = "/projectnb/statnlp/gkuwanto/XLM/data/processed/en-id/codes" # path to the codes of the model
+fastbpe = os.path.join('/projectnb/statnlp/gik/XLM', 'tools/fastBPE/fast')
+print(fastbpe)
+
+def to_bpe(sent):
+    # write sentences to tmp file
+    with open('/projectnb/statnlp/gik/XLM/sentences.bpe', 'w') as fwrite:
+         fwrite.write(sent + '\n')
+        
+    # apply bpe to tmp file
+    os.system('%s applybpe /projectnb/statnlp/gik/XLM/sentences_modified.bpe /projectnb/statnlp/gik/XLM/sentences.bpe %s' % (fastbpe, codes))
+    
+    # load bpe-ized sentences
+    sentences_bpe = []
+    with open('/projectnb/statnlp/gik/XLM/sentences_modified.bpe') as f:
+        for line in f:
+            sentences_bpe.append(line.rstrip())
+    return sentences_bpe[0]
+
+
 class DocumentSentimentDataset(Dataset):
     # Static constant variable
     LABEL2INDEX = {'positive': 0, 'neutral': 1, 'negative': 2}
@@ -31,7 +52,7 @@ class DocumentSentimentDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         text, sentiment = data['text'], data['sentiment']
-        text = '</s> ' + text + ' </s>'
+        text = '</s> ' + to_bpe(text) + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in text])
       
         return subwords, np.array(sentiment), text
@@ -96,7 +117,7 @@ class EmotionDetectionDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         tweet, label = data['tweet'], data['label']
-        tweet = '</s> ' + tweet + ' </s>'
+        tweet = '</s> ' + to_bpe(tweet) + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in tweet])
       
         return subwords, np.array(label), tweet
@@ -160,7 +181,7 @@ class EntailmentDataset(Dataset):
         data = self.data.loc[index,:]
         sent_A, sent_B, label = data['sent_A'], data['sent_B'], data['label']
         
-        pair_sentence = '</s> ' + sent_A + ' <pad> ' + sent_B + ' </s>'
+        pair_sentence = '</s> ' + to_bpe(sent_A) + ' <pad> ' + to_bpe(sent_B) + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in pair_sentence])
       
         return subwords, np.array(label), pair_sentence
@@ -226,7 +247,7 @@ class AspectBasedSentimentAnalysisProsaDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         sentence, labels = data['sentence'], [data[aspect] for aspect in self.ASPECT_DOMAIN]
-        sentence = '</s> ' + sentence + ' </s>'
+        sentence = '</s> ' + to_bpe(sentence) + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in sentence])
         return subwords, np.array(labels), sentence
     
@@ -256,7 +277,7 @@ class AspectBasedSentimentAnalysisAiryDataset(Dataset):
     def __getitem__(self, index):
         data = self.data.loc[index,:]
         sentence, labels = data['review'], [data[aspect] for aspect in self.ASPECT_DOMAIN]
-        sentence = '</s> ' + sentence + ' </s>'
+        sentence = '</s> ' + to_bpe(sentence) + ' </s>'
         subwords = torch.LongTensor([self.dico.index(w) for w in sentence])
         return subwords, np.array(labels), sentence
     

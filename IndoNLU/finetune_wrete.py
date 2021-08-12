@@ -142,9 +142,9 @@ if __name__ == "__main__":
     valid_dataset = EntailmentDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = EntailmentDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = EntailmentDataLoader(dataset=train_dataset, params=params, max_seq_len=512,batch_size=custom_params.batch_size, num_workers=4,shuffle=True)  
-    valid_loader = EntailmentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
-    test_loader = EntailmentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
+    train_loader = EntailmentDataLoader(dataset=train_dataset, params=params, max_seq_len=512,batch_size=custom_params.batch_size, num_workers=1,shuffle=True)  
+    valid_loader = EntailmentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
+    test_loader = EntailmentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
     
     w2i, i2w = EntailmentDataset.LABEL2INDEX, EntailmentDataset.INDEX2LABEL
     print(w2i)

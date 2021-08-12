@@ -140,9 +140,9 @@ if __name__ == "__main__":
     valid_dataset = DocumentSentimentDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = DocumentSentimentDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = DocumentSentimentDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=True)  
-    valid_loader = DocumentSentimentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
-    test_loader = DocumentSentimentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
+    train_loader = DocumentSentimentDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=True)  
+    valid_loader = DocumentSentimentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
+    test_loader = DocumentSentimentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
     
     w2i, i2w = DocumentSentimentDataset.LABEL2INDEX, DocumentSentimentDataset.INDEX2LABEL
     print(w2i)
