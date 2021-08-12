@@ -11,7 +11,7 @@ import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
 def to_bpe(sent):
-    return sent_bpe
+    return sent
 #     codes = "" # path to the codes of the model
 #     fastbpe = os.path.join('/projectnb/statnlp/gik/XLM', 'tools/fastBPE/fast')
 
