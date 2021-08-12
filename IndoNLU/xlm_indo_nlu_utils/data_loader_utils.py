@@ -11,23 +11,24 @@ import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
 def to_bpe(sent):
-    codes = "" # path to the codes of the model
-    fastbpe = os.path.join('/projectnb/statnlp/gik/XLM', 'tools/fastBPE/fast')
-
-    # write sentences to tmp file
-    with open('/tmp/sentences.bpe', 'w') as fwrite:
-        fwrite.write(sent + '\n')
-    
-    # apply bpe to tmp file
-    os.system('%s applybpe /tmp/sentences.bpe /tmp/sentences %s' % (fastbpe, codes))
-    
-    # load bpe-ized sentences
-    sent_bpe = ""
-    with open('/tmp/sentences.bpe') as f:
-        for line in f:
-            sent_bpe = line.rstrip()
-    
     return sent_bpe
+#     codes = "" # path to the codes of the model
+#     fastbpe = os.path.join('/projectnb/statnlp/gik/XLM', 'tools/fastBPE/fast')
+
+#     # write sentences to tmp file
+#     with open('/tmp/sentences.bpe', 'w') as fwrite:
+#         fwrite.write(sent + '\n')
+    
+#     # apply bpe to tmp file
+#     os.system('%s applybpe /tmp/sentences.bpe /tmp/sentences %s' % (fastbpe, codes))
+    
+#     # load bpe-ized sentences
+#     sent_bpe = ""
+#     with open('/tmp/sentences.bpe') as f:
+#         for line in f:
+#             sent_bpe = line.rstrip()
+    
+#     return sent_bpe
 
 
 class DocumentSentimentDataset(Dataset):
