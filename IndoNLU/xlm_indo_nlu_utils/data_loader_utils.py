@@ -12,7 +12,7 @@ from torch.utils.data import Dataset, DataLoader
 
 def to_bpe(sent):
     codes = "" # path to the codes of the model
-    fastbpe = os.path.join(os.getcwd(), 'tools/fastBPE/fast')
+    fastbpe = os.path.join('/projectnb/statnlp/gik/XLM', 'tools/fastBPE/fast')
 
     # write sentences to tmp file
     with open('/tmp/sentences.bpe', 'w') as fwrite:
