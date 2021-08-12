@@ -86,12 +86,14 @@ if __name__ == "__main__":
 
     # build model / reload weights
     model = TransformerModel(params, dico, True, True)
-    model.eval()
+    
 
     reloaded_model = OrderedDict()
     for k, v in reloaded['model'].items():
           reloaded_model[k.replace('module.', '')] = v
     model.load_state_dict(reloaded_model)
+    
+    model.eval()
     
     # Below is one way to bpe-ize sentences
     codes = "" # path to the codes of the model
