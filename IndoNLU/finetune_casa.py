@@ -91,9 +91,9 @@ if __name__ == "__main__":
     model.load_state_dict(reloaded_model)
     
     
-    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_train_preprocess.csv'
-    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_valid_preprocess.csv'
-    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/train_preprocess_bpe.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/valid_preprocess_bpe.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/test_preprocess_masked_label_bpe.csv'
     
     train_dataset = AspectBasedSentimentAnalysisProsaDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = AspectBasedSentimentAnalysisProsaDataset(valid_dataset_path, dico, params, lowercase=True)

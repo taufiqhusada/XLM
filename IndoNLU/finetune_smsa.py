@@ -132,9 +132,9 @@ if __name__ == "__main__":
         nn.Linear(model_output_size, NUM_LABELS)
     ]).cuda()
     
-    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/bpe_train_preprocess.csv'
-    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/bpe_valid_preprocess.csv'
-    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/bpe_test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/train_preprocess_bpe.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/valid_preprocess_bpe.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/test_preprocess_masked_label_bpe.csv'
     
     train_dataset = DocumentSentimentDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = DocumentSentimentDataset(valid_dataset_path, dico, params, lowercase=True)

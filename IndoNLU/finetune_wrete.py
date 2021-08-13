@@ -134,9 +134,9 @@ if __name__ == "__main__":
         nn.Linear(model_output_size, NUM_LABELS)
     ]).cuda()
     
-    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_train_preprocess.csv'
-    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_valid_preprocess.csv'
-    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/train_preprocess_bpe.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/valid_preprocess_bpe.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/test_preprocess_masked_label_bpe.csv'
     
     train_dataset = EntailmentDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = EntailmentDataset(valid_dataset_path, dico, params, lowercase=True)

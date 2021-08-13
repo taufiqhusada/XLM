@@ -136,9 +136,9 @@ if __name__ == "__main__":
     ]).cuda()
     
     
-    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_train_preprocess.csv'
-    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_valid_preprocess.csv'
-    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/train_preprocess_bpe.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/valid_preprocess_bpe.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/test_preprocess_masked_label_bpe.csv'
     
     train_dataset = EmotionDetectionDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = EmotionDetectionDataset(valid_dataset_path, dico, params, lowercase=True)
