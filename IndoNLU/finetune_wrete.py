@@ -134,17 +134,17 @@ if __name__ == "__main__":
         nn.Linear(model_output_size, NUM_LABELS)
     ]).cuda()
     
-    train_dataset_path = './dataset/wrete_entailment-ui/train_preprocess.csv'
-    valid_dataset_path = './dataset/wrete_entailment-ui/valid_preprocess.csv'
-    test_dataset_path = './dataset/wrete_entailment-ui/test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_train_preprocess.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_valid_preprocess.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/bpe_test_preprocess_masked_label.csv'
     
     train_dataset = EntailmentDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = EntailmentDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = EntailmentDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = EntailmentDataLoader(dataset=train_dataset, params=params, max_seq_len=512,batch_size=custom_params.batch_size, num_workers=1,shuffle=True)  
-    valid_loader = EntailmentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
-    test_loader = EntailmentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
+    train_loader = EntailmentDataLoader(dataset=train_dataset, params=params, max_seq_len=512,batch_size=custom_params.batch_size, num_workers=4,shuffle=True)  
+    valid_loader = EntailmentDataLoader(dataset=valid_dataset, params=params, max_seq_len=512,  batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
+    test_loader = EntailmentDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
     
     w2i, i2w = EntailmentDataset.LABEL2INDEX, EntailmentDataset.INDEX2LABEL
     print(w2i)

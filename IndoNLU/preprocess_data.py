@@ -38,7 +38,7 @@ for i,row in train.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['tweet'] = to_bpe(sent)   
-train.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/train_preprocess_bpe.csv')
+train.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/train_preprocess_bpe.csv', index=False)
 
 valid = pd.read_csv(valid_dataset_path)
 for i,row in valid.iterrows():
@@ -46,7 +46,7 @@ for i,row in valid.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['tweet'] = to_bpe(sent)  
-valid.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/valid_preprocess_bpe.csv')
+valid.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/valid_preprocess_bpe.csv', index=False)
 
 test = pd.read_csv(test_dataset_path)
 for i,row in test.iterrows():
@@ -54,7 +54,7 @@ for i,row in test.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['tweet'] = to_bpe(sent)  
-test.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/test_preprocess_masked_label_bpe.csv')
+test.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/test_preprocess_masked_label_bpe.csv', index=False)
 print('done preprocess emot data')
 
 ### SMSA  ###
@@ -69,7 +69,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['text'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/train_preprocess_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/train_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(valid_dataset_path, sep='\t', header=None)
 df.columns = ['text','sentiment']
@@ -78,7 +78,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['text'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/valid_preprocess_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/valid_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(test_dataset_path, sep='\t', header=None)
 df.columns = ['text','sentiment']
@@ -87,7 +87,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['text'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/test_preprocess_masked_label_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/smsa_doc-sentiment-prosa/test_preprocess_masked_label_bpe.csv', index=False)
 print('done preprocess smsa data') 
 
 ### Wrete ###
@@ -105,7 +105,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sent_B'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/train_preprocess_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/train_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(valid_dataset_path)
 for i,row in df.iterrows():
@@ -117,7 +117,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sent_B'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/valid_preprocess_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/valid_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(test_dataset_path)
 for i,row in df.iterrows():
@@ -129,7 +129,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sent_B'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/test_preprocess_masked_label_bpe.csv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/wrete_entailment-ui/test_preprocess_masked_label_bpe.csv', index=False)
 print('done preprocess wrete')
 
 ### hoasa ###
@@ -144,7 +144,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['review'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/train_preprocess_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/train_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(valid_dataset_path)
 for i,row in df.iterrows():
@@ -152,7 +152,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['review'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/valid_preprocess_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/valid_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(test_dataset_path)
 for i,row in df.iterrows():
@@ -160,7 +160,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['review'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/test_preprocess_masked_label_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/test_preprocess_masked_label_bpe.csv', index=False)
 print('done preprocess hoasa')
 
 ### CASA ###
@@ -176,7 +176,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sentence'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/train_preprocess_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/train_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(valid_dataset_path)
 for i,row in df.iterrows():
@@ -184,7 +184,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sentence'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/valid_preprocess_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/valid_preprocess_bpe.csv', index=False)
 
 df = pd.read_csv(test_dataset_path)
 for i,row in df.iterrows():
@@ -192,7 +192,7 @@ for i,row in df.iterrows():
     if (sent in dict_informal_to_formal):
         sent = dict_informal_to_formal[sent]
     row['sentence'] = to_bpe(sent)   
-df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/test_preprocess_masked_label_bpe.tsv')
+df.to_csv('/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/test_preprocess_masked_label_bpe.csv', index=False)
 print('done preprocess casa')
 
     

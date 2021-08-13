@@ -91,17 +91,17 @@ if __name__ == "__main__":
     model.load_state_dict(reloaded_model)
     
     
-    train_dataset_path = './dataset/casa_absa-prosa/train_preprocess.csv'
-    valid_dataset_path = './dataset/casa_absa-prosa/valid_preprocess.csv'
-    test_dataset_path = './dataset/casa_absa-prosa/test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_train_preprocess.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_valid_preprocess.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/casa_absa-prosa/bpe_test_preprocess_masked_label.csv'
     
     train_dataset = AspectBasedSentimentAnalysisProsaDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = AspectBasedSentimentAnalysisProsaDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = AspectBasedSentimentAnalysisProsaDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=True)  
-    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
-    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
+    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=True)  
+    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
+    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
     
     w2i, i2w = AspectBasedSentimentAnalysisProsaDataset.LABEL2INDEX, AspectBasedSentimentAnalysisProsaDataset.INDEX2LABEL
     print(w2i)

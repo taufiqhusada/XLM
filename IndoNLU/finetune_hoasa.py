@@ -91,17 +91,17 @@ if __name__ == "__main__":
     model.load_state_dict(reloaded_model)
     
     
-    train_dataset_path = './dataset/hoasa_absa-airy/train_preprocess.csv'
-    valid_dataset_path = './dataset/hoasa_absa-airy/valid_preprocess.csv'
-    test_dataset_path = './dataset/hoasa_absa-airy/test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/bpe_train_preprocess.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/bpe_valid_preprocess.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/hoasa_absa-airy/bpe_test_preprocess_masked_label.csv'
     
     train_dataset = AspectBasedSentimentAnalysisAiryDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = AspectBasedSentimentAnalysisAiryDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = AspectBasedSentimentAnalysisAiryDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=True)  
-    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
-    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
+    train_loader = AspectBasedSentimentAnalysisDataLoader(dataset=train_dataset, params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=True)  
+    valid_loader = AspectBasedSentimentAnalysisDataLoader(dataset=valid_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
+    test_loader = AspectBasedSentimentAnalysisDataLoader(dataset=test_dataset,  params = params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
     
     w2i, i2w = AspectBasedSentimentAnalysisAiryDataset.LABEL2INDEX, AspectBasedSentimentAnalysisAiryDataset.INDEX2LABEL
     print(w2i)

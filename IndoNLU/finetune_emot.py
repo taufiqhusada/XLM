@@ -136,17 +136,17 @@ if __name__ == "__main__":
     ]).cuda()
     
     
-    train_dataset_path = './dataset/emot_emotion-twitter/train_preprocess.csv'
-    valid_dataset_path = './dataset/emot_emotion-twitter/valid_preprocess.csv'
-    test_dataset_path = './dataset/emot_emotion-twitter/test_preprocess_masked_label.csv'
+    train_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_train_preprocess.csv'
+    valid_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_valid_preprocess.csv'
+    test_dataset_path = '/projectnb/statnlp/gik/XLM/IndoNLU/data/emot_emotion-twitter/bpe_test_preprocess_masked_label.csv'
     
     train_dataset = EmotionDetectionDataset(train_dataset_path, dico, params, lowercase=True)
     valid_dataset = EmotionDetectionDataset(valid_dataset_path, dico, params, lowercase=True)
     test_dataset = EmotionDetectionDataset(test_dataset_path,dico, params, lowercase=True)
 
-    train_loader = EmotionDetectionDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=True)  
-    valid_loader = EmotionDetectionDataLoader(dataset=valid_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)  
-    test_loader = EmotionDetectionDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=1, shuffle=False)
+    train_loader = EmotionDetectionDataLoader(dataset=train_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=True)  
+    valid_loader = EmotionDetectionDataLoader(dataset=valid_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)  
+    test_loader = EmotionDetectionDataLoader(dataset=test_dataset, params=params, max_seq_len=512, batch_size=custom_params.batch_size, num_workers=4, shuffle=False)
     
     w2i, i2w = EmotionDetectionDataset.LABEL2INDEX, EmotionDetectionDataset.INDEX2LABEL
     print(w2i)
